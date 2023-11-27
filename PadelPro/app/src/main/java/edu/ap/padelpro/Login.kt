@@ -30,6 +30,8 @@ class Login : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -46,7 +48,7 @@ class Login : AppCompatActivity() {
 
         textView = findViewById(R.id.registerNow)
         textView.setOnClickListener {
-            val intent = Intent(applicationContext, Login::class.java)
+            val intent = Intent(applicationContext, Register::class.java)
             startActivity(intent)
             finish()
         }

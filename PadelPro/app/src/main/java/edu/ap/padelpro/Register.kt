@@ -30,6 +30,8 @@ class Register : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -72,6 +74,9 @@ class Register : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = auth.currentUser
+                        val intent = Intent(applicationContext, Login::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
                         Toast.makeText(
