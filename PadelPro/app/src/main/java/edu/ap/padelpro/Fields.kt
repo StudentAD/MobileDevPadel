@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import edu.ap.padelpro.R.*
 import edu.ap.padelpro.adapter.ItemAdapter
 import edu.ap.padelpro.model.Datasource
@@ -14,7 +17,9 @@ class Fields : ComponentActivity(){
         setContentView(layout.activity_fields)
 
         // Initialize data.
-        val myDataset = Datasource().loadFields()
+         lateinit var database: DatabaseReference
+        database = Firebase.database.reference
+        val myDataset = Datasource(database).loadFields()
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.adapter = ItemAdapter(this, myDataset)
