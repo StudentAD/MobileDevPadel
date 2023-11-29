@@ -1,5 +1,6 @@
 package edu.ap.padelpro
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.content.Intent
@@ -13,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 
 class Profile : Fragment() {
 
@@ -27,6 +27,7 @@ class Profile : Fragment() {
     private lateinit var profileImageView: ImageView
     private val defaultProfileImage = R.drawable.default_profile
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,21 +90,6 @@ class Profile : Fragment() {
         }
 
         return view
-    }
-
-    private fun loadProfileImage() {
-        val profileImageRef = FirebaseStorage.getInstance().reference
-            .child("profile_picture/${currentUser?.uid}")
-
-        profileImageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-            Glide.with(this)
-                .load(downloadUri)
-                .placeholder(defaultProfileImage)
-                .error(defaultProfileImage)
-                .into(profileImageView)
-        }.addOnFailureListener { exception ->
-            profileImageView.setImageResource(defaultProfileImage)
-        }
     }
 
     private fun loadProfilePicture() {
