@@ -1,11 +1,9 @@
 package edu.ap.padelpro
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -16,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.app.DatePickerDialog
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.ImageButton
@@ -24,7 +24,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
-class Register : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     private lateinit var editTextEmail: TextInputEditText
     private lateinit var editTextPassword: TextInputEditText
@@ -80,11 +80,12 @@ class Register : AppCompatActivity() {
         //endregion
 
         auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
 
         //region redirectToLogin
         textView = findViewById(R.id.loginNow)
         textView.setOnClickListener {
-            val intent = Intent(applicationContext, Login::class.java)
+            val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -97,13 +98,14 @@ class Register : AppCompatActivity() {
             val lastName = editTextLastName.text.toString()
             val city = editTextCity.text.toString()
             val gender = spinnerGender.selectedItem.toString()
+            val dob = dobEditText.text.toString()
 
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ||
                 TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) ||
-                TextUtils.isEmpty(city) || TextUtils.isEmpty(gender)
+                TextUtils.isEmpty(city) || TextUtils.isEmpty(gender) || TextUtils.isEmpty(dob)
             ) {
                 Toast.makeText(
-                    this@Register,
+                    this@RegisterActivity,
                     "Please fill in all fields",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -124,31 +126,31 @@ class Register : AppCompatActivity() {
                                 "firstName" to firstName,
                                 "lastName" to lastName,
                                 "city" to city,
-                                "gender" to gender
-                                // Add more fields as needed
+                                "gender" to gender,
+                                "dateOfBirth" to dob,
                             )
 
                             userRef.set(userData)
                                 .addOnSuccessListener {
-                                    // Profile created successfully
-                                    val intent = Intent(applicationContext, Login::class.java)
+                                    val intent = Intent(applicationContext, LoginActivity::class.java)
                                     startActivity(intent)
                                     finish()
                                 }.addOnFailureListener { e ->
-                                    // Handle failure to create profile
                                     Toast.makeText(
-                                        this@Register,
+                                        this@RegisterActivity,
                                         "Failed to create profile",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    Log.e(TAG, "Error adding user data to Firestore: $e")
                                 }
                         }
                     } else {
                         Toast.makeText(
-                            this@Register,
+                            this@RegisterActivity,
                             "Authentication failed.",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.e(TAG, "Error creating user: ${task.exception}")
                     }
                 }
         }

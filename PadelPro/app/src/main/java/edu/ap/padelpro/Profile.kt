@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -42,7 +40,7 @@ class Profile : Fragment() {
         buttonLogout.setOnClickListener {
             // Logout functionality
             auth.signOut()
-            val intent = Intent(requireContext(), Login::class.java)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
         }

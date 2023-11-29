@@ -1,6 +1,5 @@
 package edu.ap.padelpro
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     private lateinit var editTextEmail: TextInputEditText
     private lateinit var editTextPassword: TextInputEditText
     private lateinit var buttonLogin: Button
@@ -48,7 +47,7 @@ class Login : AppCompatActivity() {
 
         textView = findViewById(R.id.registerNow)
         textView.setOnClickListener {
-            val intent = Intent(applicationContext, Register::class.java)
+            val intent = Intent(applicationContext, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -59,12 +58,12 @@ class Login : AppCompatActivity() {
             val password = editTextPassword.text.toString()
 
             if (TextUtils.isEmpty(email)) {
-                Toast.makeText(this@Login, "Enter email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (TextUtils.isEmpty(password)) {
-                Toast.makeText(this@Login, "Enter password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Enter password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
