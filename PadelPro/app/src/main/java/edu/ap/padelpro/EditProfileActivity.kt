@@ -1,5 +1,6 @@
 package edu.ap.padelpro
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -22,6 +23,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_edit_profile)
 
         auth = FirebaseAuth.getInstance()
@@ -69,6 +71,11 @@ class EditProfileActivity : AppCompatActivity() {
             val updatedLastName = lastNameEditText.text.toString()
             val updatedCity = cityEditText.text.toString()
 
+            if (updatedFirstName.isBlank() || updatedLastName.isBlank() || updatedCity.isBlank()) {
+                Toast.makeText(this@EditProfileActivity, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val user = auth.currentUser
             val profileUpdates = UserProfileChangeRequest.Builder()
                 .setDisplayName("$updatedFirstName $updatedLastName")
@@ -101,6 +108,10 @@ class EditProfileActivity : AppCompatActivity() {
                                         "Profile updated successfully",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    val intent = Intent(applicationContext, Profile::class.java)
+                                    startActivity(intent)
+                                    finish()
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(
