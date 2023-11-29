@@ -50,7 +50,7 @@ class Profile : Fragment() {
         textViewCity = view.findViewById(R.id.city_text)
 
         profileImageView = view.findViewById(R.id.profile_image_view)
-        loadProfileImage()
+        loadProfilePicture()
 
         currentUser = (requireActivity() as MainActivity).getCurrentUser()
 
@@ -93,7 +93,7 @@ class Profile : Fragment() {
 
     private fun loadProfileImage() {
         val profileImageRef = FirebaseStorage.getInstance().reference
-            .child("profile_pictures/${currentUser?.uid}")
+            .child("profile_picture/${currentUser?.uid}")
 
         profileImageRef.downloadUrl.addOnSuccessListener { downloadUri ->
             Glide.with(this)
@@ -103,6 +103,19 @@ class Profile : Fragment() {
                 .into(profileImageView)
         }.addOnFailureListener { exception ->
             profileImageView.setImageResource(defaultProfileImage)
+        }
+    }
+
+    private fun loadProfilePicture() {
+        val currentUser = auth.currentUser
+        currentUser?.let { user ->
+            val photoUrl = user.photoUrl
+            if (photoUrl != null) {
+                Glide.with(this@Profile)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.default_profile)
+                    .into(profileImageView)
+            }
         }
     }
 }
