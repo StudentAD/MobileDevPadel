@@ -123,6 +123,10 @@ class EditProfileActivity : AppCompatActivity() {
                                 if (existingGender != null) {
                                     updatedUserData["gender"] = existingGender
                                 }
+                                val existingDoB = documentSnapshot.getString("dateOfBirth")
+                                if (existingDoB != null) {
+                                    updatedUserData["dateOfBirth"] = existingDoB
+                                }
                             }
 
                             userRef.set(updatedUserData)
