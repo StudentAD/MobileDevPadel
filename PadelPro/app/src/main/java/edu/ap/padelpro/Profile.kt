@@ -34,6 +34,15 @@ class Profile : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        //region redirectToEditProfileActivity
+        val editProfileButton: Button = view.findViewById(R.id.edit_profile_button)
+
+        editProfileButton.setOnClickListener {
+            val intent = Intent(requireContext(), EditProfileActivity::class.java)
+            startActivity(intent)
+        }
+        //endregion
+
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         buttonLogout = view.findViewById(R.id.logout_button)
