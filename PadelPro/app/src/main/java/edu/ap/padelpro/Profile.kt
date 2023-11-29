@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class Profile : Fragment() {
 
@@ -20,6 +23,9 @@ class Profile : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private var currentUser: FirebaseUser? = null
+
+    private lateinit var profileImageView: ImageView
+    private val defaultProfileImage = R.drawable.default_profile
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +40,9 @@ class Profile : Fragment() {
         textViewUserName = view.findViewById(R.id.user_name_text)
         textViewCity = view.findViewById(R.id.city_text)
 
-        // Retrieve the current user from MainActivity (assuming it's already authenticated)
+        profileImageView = view.findViewById(R.id.profile_image_view)
+        loadProfileImage()
+
         currentUser = (requireActivity() as MainActivity).getCurrentUser()
 
         // Display user details if the currentUser is not null
@@ -59,14 +67,12 @@ class Profile : Fragment() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Handle failures
                     textViewUserName.text = "Failed to retrieve user details"
                     textViewCity.text = "Failed to retrieve city details"
                 }
         }
 
         buttonLogout.setOnClickListener {
-            // Logout functionality
             auth.signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
@@ -74,5 +80,20 @@ class Profile : Fragment() {
         }
 
         return view
+    }
+
+    private fun loadProfileImage() {
+        val profileImageRef = FirebaseStorage.getInstance().reference
+            .child("profile_pictures/${currentUser?.uid}")
+
+        profileImageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+            Glide.with(this)
+                .load(downloadUri)
+                .placeholder(defaultProfileImage)
+                .error(defaultProfileImage)
+                .into(profileImageView)
+        }.addOnFailureListener { exception ->
+            profileImageView.setImageResource(defaultProfileImage)
+        }
     }
 }
