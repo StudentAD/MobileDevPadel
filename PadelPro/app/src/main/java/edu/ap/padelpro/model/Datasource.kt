@@ -1,19 +1,26 @@
 package edu.ap.padelpro.model
 
 import android.util.Log
-import com.google.firebase.Firebase
+
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.database
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.ap.padelpro.R
 
 class Datasource (var database: DatabaseReference){
     fun loadFields():List<Field>{
-        database = Firebase.database.reference
-        database.child("Fields").get().addOnSuccessListener {
-            Log.i("firebase", "Got value ${it.value}")
-        }.addOnFailureListener{
-            Log.e("firebase", "Error getting data", it)
-        }
+        // Assuming you have already initialized FirebaseApp and Firestore
+        val firestore = FirebaseFirestore.getInstance()
+
+      val list=  firestore.collection("Fields").get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.i("firestore", "Got value ${document.id}: ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("firestore", "Error getting data", exception)
+            }
+
 
         return listOf(
             Field(R.string.court1, R.drawable.image1),
