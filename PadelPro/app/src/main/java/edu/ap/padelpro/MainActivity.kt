@@ -19,6 +19,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //region EditProfileActivity needs this tho redirect to profile page
+        if (intent.hasExtra("fragmentToLoad")) {
+            val fragmentToLoad = intent.getStringExtra("fragmentToLoad")
+            when (fragmentToLoad) {
+                "profile" -> replaceFragment(Profile())
+            }
+        } else {
+            replaceFragment(Profile())
+        }
+        //endregion
+
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.play -> replaceFragment(Play())

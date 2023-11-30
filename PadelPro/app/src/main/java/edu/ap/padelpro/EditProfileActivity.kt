@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import edu.ap.padelpro.databinding.ActivityMainBinding
 import kotlin.math.log
 
 class EditProfileActivity : AppCompatActivity() {
@@ -28,6 +29,8 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText*/
     private lateinit var cityEditText: EditText
     private lateinit var saveChangesButton: Button
+
+    private lateinit var binding: ActivityMainBinding
 
     //region profilePicture
     private lateinit var profileImageView: ImageView
@@ -137,9 +140,17 @@ class EditProfileActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
 
-                                    val intent = Intent(applicationContext, Profile::class.java)
-                                    startActivity(intent)
-                                    finish()
+                                    binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
+                                        when (menuItem.itemId) {
+                                            R.id.profile -> {
+                                                val intent = Intent(this@EditProfileActivity, MainActivity::class.java)
+                                                intent.putExtra("fragmentToLoad", "profile")
+                                                startActivity(intent)
+                                                true
+                                            }
+                                            else -> false
+                                        }
+                                    }
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(
