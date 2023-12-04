@@ -12,13 +12,30 @@ import edu.ap.padelpro.model.Field
 
 class ItemAdapter(
     private val context: Context,
-    private val dataset: List<Field>
+    private val dataset: List<Field>,
+    private val listener: FieldListener
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
         val textView: TextView = view.findViewById(R.id.item_title)
-        val imageView: ImageView= view.findViewById(R.id.item_image)
+        val imageView: ImageView = view.findViewById(R.id.item_image)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position:Int = adapterPosition
+            if (position!=RecyclerView.NO_POSITION)
+                listener.OnFieldClick(position)
+        }
     }
+    interface FieldListener{
+        fun OnFieldClick( position: Int)
+    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val adapterLayout = LayoutInflater.from(parent.context)
@@ -33,4 +50,5 @@ class ItemAdapter(
         holder.textView.text = context.resources.getString(item.name)
         holder.imageView.setImageResource(item.imageResourceId)
     }
+
 }
