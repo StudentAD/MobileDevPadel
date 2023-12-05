@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import edu.ap.padelpro.adapter.ItemAdapter
 import edu.ap.padelpro.databinding.ActivityFieldsBinding
 import edu.ap.padelpro.model.Datasource
+import edu.ap.padelpro.ui.theme.FieldDetailFragment
 import kotlin.math.log
 
 class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
@@ -43,10 +44,12 @@ class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
     }
 
     override fun OnFieldClick(position: Int) {
-        Log.v("FieldClick", "item $position clicked")
-        /*
-        lateinit var database: DatabaseReference
-        database = Firebase.database.reference
-        val field:Field= Datasource(database).loadFields().get(position)*/
+        val paddleFieldFragment = FieldDetailFragment(position)
+
+        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentContainer, paddleFieldFragment)
+        fragmentTransaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
+        fragmentTransaction.commit()
     }
+
 }
