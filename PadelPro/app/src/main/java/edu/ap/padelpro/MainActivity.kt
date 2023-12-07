@@ -3,7 +3,13 @@ package edu.ap.padelpro
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -23,6 +29,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //region EditProfileActivity needs this tho redirect to profile page
+        if (intent.hasExtra("fragmentToLoad")) {
+            val fragmentToLoad = intent.getStringExtra("fragmentToLoad")
+            when (fragmentToLoad) {
+                "profile" -> replaceFragment(Profile())
+            }
+        } else {
+            replaceFragment(Profile())
+        }
+        //endregion
+
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.play -> replaceFragment(FieldsFragment())
@@ -39,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         user = getCurrentUser()
 
         if (user == null) {
-            val intent = Intent(applicationContext, Login::class.java)
+            val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
