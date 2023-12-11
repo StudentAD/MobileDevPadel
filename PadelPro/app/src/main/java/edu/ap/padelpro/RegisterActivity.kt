@@ -128,6 +128,7 @@ class RegisterActivity : AppCompatActivity() {
                                 "city" to city,
                                 "gender" to gender,
                                 "dateOfBirth" to dob,
+                                "matchesPlayedCount" to 0
                             )
 
                             userRef.set(userData)

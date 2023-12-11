@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Profile Image View -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_view"
         android:layout_width="150dp"
@@ -16,7 +15,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
-    <!-- Text Views Container -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,56 +23,103 @@
         android:layout_alignTop="@id/profile_image_view"
         android:layout_marginStart="16dp">
 
-        <!-- User Name TextView -->
         <TextView
             android:id="@+id/user_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="28sp"
+            android:textStyle="bold"
             android:textColor="#000000"
             android:layout_marginTop="20dp"
             android:text="User Name" />
 
-        <!-- City TextView -->
         <TextView
             android:id="@+id/city_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="#808080"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:text="City Name" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/matches_played_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+                android:textColor="#403f3f"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/matches_played_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#808080"
+                android:text=" Matches"
+                android:layout_marginStart="5dp"
+                android:paddingTop="4dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Buttons Container -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/profile_image_view"
         android:layout_alignStart="@id/profile_image_view"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_alignParentStart="true"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-        <!-- Logout Button -->
         <Button
             android:id="@+id/logout_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/logout"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp" />
 
-        <!-- Edit Profile Button -->
         <Button
             android:id="@+id/edit_profile_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Edit Profile"
             android:layout_marginStart="16dp"
             android:onClick="onEditProfileButtonClick" />
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/activities_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activities"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/buttonsLayout"
+        android:layout_marginTop="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#808080"
+        android:layout_below="@id/activities_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>
 
