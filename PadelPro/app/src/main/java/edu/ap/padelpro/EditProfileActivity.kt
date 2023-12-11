@@ -25,8 +25,6 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var firstNameEditText: EditText
     private lateinit var lastNameEditText: EditText
-    /*private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText*/
     private lateinit var cityEditText: EditText
     private lateinit var saveChangesButton: Button
 
@@ -52,8 +50,6 @@ class EditProfileActivity : AppCompatActivity() {
 
         firstNameEditText = findViewById(R.id.first_name)
         lastNameEditText = findViewById(R.id.last_name)
-        /*emailEditText = findViewById(R.id.email)
-        passwordEditText = findViewById(R.id.password)*/
         cityEditText = findViewById(R.id.city)
         saveChangesButton = findViewById(R.id.save_changes_button)
 
@@ -82,16 +78,6 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
         }
-
-        /*val newPassword = passwordEditText.toString()
-        currentUser?.updatePassword(newPassword)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Failed to update password", Toast.LENGTH_SHORT).show()
-                }
-            }*/
 
         saveChangesButton.setOnClickListener {
             val updatedFirstName = firstNameEditText.text.toString()
@@ -129,6 +115,10 @@ class EditProfileActivity : AppCompatActivity() {
                                 val existingDoB = documentSnapshot.getString("dateOfBirth")
                                 if (existingDoB != null) {
                                     updatedUserData["dateOfBirth"] = existingDoB
+                                }
+                                val existingMatchesPlayed = documentSnapshot.getLong("matchesPlayedCount")
+                                if (existingMatchesPlayed != null) {
+                                    updatedUserData["matchesPlayedCount"] = existingMatchesPlayed.toString()
                                 }
                             }
 

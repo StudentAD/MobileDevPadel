@@ -20,6 +20,7 @@ class Profile : Fragment() {
     private lateinit var buttonLogout: Button
     private lateinit var textViewUserName: TextView
     private lateinit var textViewCity: TextView
+    private lateinit var textViewMatchesPlayedCount: TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private var currentUser: FirebaseUser? = null
@@ -49,6 +50,7 @@ class Profile : Fragment() {
         buttonLogout = view.findViewById(R.id.logout_button)
         textViewUserName = view.findViewById(R.id.user_name_text)
         textViewCity = view.findViewById(R.id.city_text)
+        textViewMatchesPlayedCount = view.findViewById(R.id.matches_played_count)
 
         profileImageView = view.findViewById(R.id.profile_image_view)
         loadProfilePicture()
@@ -67,13 +69,16 @@ class Profile : Fragment() {
                         val firstName = userData?.get("firstName") as? String ?: "No first name"
                         val lastName = userData?.get("lastName") as? String ?: "No last name"
                         val city = userData?.get("city") as? String ?: "No city"
+                        val matchesPlayedCount = userData?.get("matchesPlayedCount") as? Number ?: "20"
 
                         val userName = "$firstName $lastName"
                         textViewUserName.text = userName
-                        textViewCity.text = "City: $city"
+                        textViewCity.text = "Plays in: $city"
+                        textViewMatchesPlayedCount.text = matchesPlayedCount.toString()
                     } else {
                         textViewUserName.text = "User details not available"
                         textViewCity.text = "City details not available"
+                        textViewMatchesPlayedCount.text = "30"
                     }
                 }
                 .addOnFailureListener { exception ->
