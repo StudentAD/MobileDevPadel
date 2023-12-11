@@ -70,6 +70,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -99,6 +100,26 @@
             android:layout_marginStart="16dp"
             android:onClick="onEditProfileButtonClick" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/activities_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activities"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/buttonsLayout"
+        android:layout_marginTop="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#808080"
+        android:layout_below="@id/activities_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>
 
