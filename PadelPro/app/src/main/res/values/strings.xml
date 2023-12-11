@@ -7,6 +7,16 @@
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to register</string>
     <string name="logout">logout</string>
+    <string name="court1">Rapid Racket Arena</string>
+    <string name="court2">Victory Volley Venue</string>
+    <string name="court3">Slam Dunk Sportsplex</string>
+    <string name="court4">Elite Elevation Court</string>
+    <string name="court5">Dynamic Smash Square</string>
+    <string name="court6">Precision Padel Pavilion</string>
+    <string name="court7">Supreme Serve Sanctuary</string>
+    <string name="court8">Grand Slam Gardens</string>
+    <string name="court9">Majestic Matchpoint Manor</string>
+    <string name="court10">Zenith Zing Zone</string>
     <string name="play_fragment">Play Fragment</string>
     <string name="profile_fragment">Profile Fragment</string>
     <string name="settings_fragment">Settings Fragment</string>

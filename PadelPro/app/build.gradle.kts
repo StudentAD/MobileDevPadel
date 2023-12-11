@@ -70,6 +70,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

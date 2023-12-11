@@ -1,0 +1,26 @@
+<!-- fragment_paddle_field.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"> <!-- Set a fully opaque white background -->
+
+    <!-- Add your UI components here -->
+    <TextView
+        android:id="@+id/fieldTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paddle Field Title"/>
+
+    <!-- RecyclerView for available hours -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hoursRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
