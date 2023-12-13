@@ -69,7 +69,7 @@ class Profile : Fragment() {
                         val firstName = userData?.get("firstName") as? String ?: "No first name"
                         val lastName = userData?.get("lastName") as? String ?: "No last name"
                         val city = userData?.get("city") as? String ?: "No city"
-                        val matchesPlayedCount = userData?.get("matchesPlayedCount") as? Number ?: "20"
+                        val matchesPlayedCount = userData?.get("matchesPlayedCount") as? String ?: "0"
 
                         val userName = "$firstName $lastName"
                         textViewUserName.text = userName
@@ -78,7 +78,7 @@ class Profile : Fragment() {
                     } else {
                         textViewUserName.text = "User details not available"
                         textViewCity.text = "City details not available"
-                        textViewMatchesPlayedCount.text = "30"
+                        textViewMatchesPlayedCount.text = "0"
                     }
                 }
                 .addOnFailureListener { exception ->
