@@ -17,7 +17,7 @@ import kotlin.math.log
 
 class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
 
-    private lateinit var binding: ActivityFieldsBinding // Adjust the binding class name based on your layout file name
+    private lateinit var binding: ActivityFieldsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
