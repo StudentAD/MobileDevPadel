@@ -1,12 +1,11 @@
 package edu.ap.padelpro.model
 
-import androidx.annotation.StringRes
 import androidx.annotation.DrawableRes
-import edu.ap.padelpro.R
+import com.google.firebase.firestore.QueryDocumentSnapshot
 
-data class Field (
-   @StringRes val name:Int,
-    @DrawableRes val imageResourceId: Int
+data class Field(
+    val document: QueryDocumentSnapshot,
+    @DrawableRes var imageResourceId: Int
 ){
 
     var hours = mutableListOf<String>(

@@ -8,7 +8,6 @@ import edu.ap.padelpro.R
 
 class Datasource(var database: DatabaseReference) {
     fun loadFields(fieldsDetailsCallback: FieldsDetailsCallback) {
-        // Assuming you have already initialized FirebaseApp and Firestore
         val firestore = FirebaseFirestore.getInstance()
 
         val mList: ArrayList<Field> = ArrayList()

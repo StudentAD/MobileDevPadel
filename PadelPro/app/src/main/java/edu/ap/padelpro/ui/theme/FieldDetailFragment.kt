@@ -35,7 +35,7 @@ class FieldDetailFragment(val position: Int) : Fragment() {
         lateinit var database: DatabaseReference
         database = Firebase.database.reference
         val paddleField =
-            Datasource(database).loadFields()[position] // Implement this method to retrieve paddle field data
+            Datasource(database).loadFields()[position]
 
         val binding= FragmentFieldDetailBinding.bind(view)
         val recyclerView: RecyclerView = binding.hoursRecyclerView
@@ -45,8 +45,5 @@ class FieldDetailFragment(val position: Int) : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val availableHours = paddleField.hours
         recyclerView.adapter = HoursAdapter(availableHours)
-
-
-        // Additional setup if needed
     }
 }
