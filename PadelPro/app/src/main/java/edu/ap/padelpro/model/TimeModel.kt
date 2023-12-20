@@ -1,4 +1,3 @@
 package edu.ap.padelpro.model
 
-class TimeModel {
-}
+data class TimeModel(var time: Long, var isSelected: Boolean, val isReserved: Boolean)

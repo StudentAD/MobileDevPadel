@@ -1,4 +1,3 @@
 package edu.ap.padelpro.model
 
-class UserReservedMatches {
-}
+data class UserReservedMatches(val stadiumName: String, val time: Long)

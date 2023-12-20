@@ -35,8 +35,6 @@ class ItemAdapter(
         fun OnFieldClick( position: Int)
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item, parent, false)
@@ -47,8 +45,7 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = dataset[position]
-        holder.textView.text = context.resources.getString(item.name)
+        holder.textView.text = item.document["Name"].toString()
         holder.imageView.setImageResource(item.imageResourceId)
     }
-
 }

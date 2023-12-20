@@ -1,7 +1,6 @@
 package edu.ap.padelpro
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import edu.ap.padelpro.databinding.ActivityFieldsBinding
 import edu.ap.padelpro.model.Datasource
 import edu.ap.padelpro.model.Field
 import edu.ap.padelpro.ui.theme.FieldDetailFragment
-import kotlin.math.log
 
 class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
 
@@ -40,8 +38,6 @@ class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
                 val recyclerView = binding.recyclerView
                 recyclerView.adapter = ItemAdapter(requireContext(), mList, this@FieldsFragment)
 
-                // Use this setting to improve performance if you know that changes
-                // in content do not change the layout size of the RecyclerView
                 recyclerView.setHasFixedSize(true)
             }
 
