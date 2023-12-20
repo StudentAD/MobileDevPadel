@@ -15,8 +15,8 @@
         android:title="Profile" />
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/baseline_settings_24"
+        android:icon="@drawable/baseline_sports_volleyball_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Settings" />
+        android:title="Matches" />
 </menu>
