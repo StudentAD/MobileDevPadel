@@ -12,13 +12,14 @@ import com.google.firebase.ktx.Firebase
 import edu.ap.padelpro.adapter.ItemAdapter
 import edu.ap.padelpro.databinding.ActivityFieldsBinding
 import edu.ap.padelpro.model.Datasource
+import edu.ap.padelpro.model.Field
 import edu.ap.padelpro.ui.theme.FieldDetailFragment
 import kotlin.math.log
 
 class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
 
     private lateinit var binding: ActivityFieldsBinding
-
+    private var mList = ArrayList<Field>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,22 +34,30 @@ class FieldsFragment : Fragment(), ItemAdapter.FieldListener {
         // Initialize data.
         lateinit var database: DatabaseReference
         database = Firebase.database.reference
-        val myDataset = Datasource(database).loadFields()
+        Datasource(database).loadFields(object : Datasource.FieldsDetailsCallback {
+            override fun onSuccess(mArrayList: ArrayList<Field>) {
+                mList = mArrayList
+                val recyclerView = binding.recyclerView
+                recyclerView.adapter = ItemAdapter(requireContext(), mList, this@FieldsFragment)
 
-        val recyclerView = binding.recyclerView
-        recyclerView.adapter = ItemAdapter(requireContext(), myDataset,this)
+                // Use this setting to improve performance if you know that changes
+                // in content do not change the layout size of the RecyclerView
+                recyclerView.setHasFixedSize(true)
+            }
 
-        // Use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true)
+            override fun onFailure(error: String) {
+
+            }
+
+        })
     }
 
     override fun OnFieldClick(position: Int) {
-        val paddleFieldFragment = FieldDetailFragment(position)
+        val paddleFieldFragment = FieldDetailFragment(mList[position])
 
         val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainer, paddleFieldFragment)
-        fragmentTransaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
