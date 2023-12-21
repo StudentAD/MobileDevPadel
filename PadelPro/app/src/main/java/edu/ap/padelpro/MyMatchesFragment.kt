@@ -1,59 +1,147 @@
 package edu.ap.padelpro
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import edu.ap.padelpro.adapter.UserMatchesAdapter
+import edu.ap.padelpro.databinding.FragmentMyMatchesBinding
+import edu.ap.padelpro.model.UserReservedMatches
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Settings.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Settings : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+class MyMatchesFragment : Fragment() {
+    private lateinit var binding: FragmentMyMatchesBinding
+    private lateinit var db: FirebaseFirestore
+    private var currentUser: FirebaseUser? = null
+    private lateinit var auth: FirebaseAuth
+    private var userReservedMatches: ArrayList<UserReservedMatches> = ArrayList()
+    private var allmatchesList: ArrayList<UserReservedMatches> = ArrayList()
+    private lateinit var myMatchesAdapter: UserMatchesAdapter
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        binding = FragmentMyMatchesBinding.inflate(layoutInflater, container, false)
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        currentUser = (requireActivity() as MainActivity).getCurrentUser()
+
+        binding.btnMyMatches.setOnClickListener {
+//            binding.rvMyMatches.visibility = View.VISIBLE
+//            binding.rvAvailable.visibility = View.GONE
+            myMatchesAdapter.updateList(userReservedMatches)
+            binding.btnMyMatches.backgroundTintList = resources.getColorStateList(R.color.green);
+            binding.btnAvailable.backgroundTintList = resources.getColorStateList(R.color.gray);
+        }
+        binding.btnAvailable.setOnClickListener {
+//            binding.rvMyMatches.visibility = View.GONE
+//            binding.rvAvailable.visibility = View.VISIBLE
+            myMatchesAdapter.updateList(allmatchesList)
+            binding.btnAvailable.backgroundTintList = resources.getColorStateList(R.color.green);
+            binding.btnMyMatches.backgroundTintList = resources.getColorStateList(R.color.gray);
+
+        }
+        getDocIDOfAvailableMatches()
+        getMyMatchesList()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Settings.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Settings().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun getMyMatchesList() {
+        myMatchesAdapter = UserMatchesAdapter(
+            requireContext(),
+            userReservedMatches,
+            object : UserMatchesAdapter.ClickCallBack {
+                override fun onItemClick(position: Int) {
+
                 }
+
+            })
+        binding.rvMyMatches.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMyMatches.adapter = myMatchesAdapter
+        currentUser?.let { user ->
+            val userID = user.uid
+            val userRef = db.collection("users").document(userID)
+            userRef.get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val userData = documentSnapshot.data
+                        val firstName = userData?.get("firstName") as? String ?: "No first name"
+                        if (documentSnapshot.data?.containsKey("reservedMatches")!!) {
+                            val listOfReservations =
+                                documentSnapshot.data?.get("reservedMatches") as ArrayList<HashMap<*,*>>
+
+                            for (i in 0 until listOfReservations.size) {
+                                Log.e(
+                                    "TAG",
+                                    "getMyMatchesList: ${listOfReservations[i]}"
+                                )
+                                userReservedMatches.add(
+                                    UserReservedMatches(listOfReservations[i]["stadiumName"].toString()
+                                    ,listOfReservations[i]["time"] as Long)
+                                )
+                            }
+
+//                            userReservedMatches.addAll(listOfReservations)
+                            myMatchesAdapter.notifyDataSetChanged()
+                        }
+
+                    }
+                }
+                .addOnFailureListener { exception ->
+
+                }
+        }
+
+    }
+    private fun getDocIDOfAvailableMatches() {
+        val fireStore = FirebaseFirestore.getInstance()
+        fireStore.collection("allMatches").get()
+            .addOnSuccessListener { documents ->
+                val docId = documents.documents[0].id
+                getListOfAvailableMatches(docId)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("firestore", "Error getting data", exception)
+            }
+    }
+
+    private fun getListOfAvailableMatches(docId: String) {
+
+        val userRef = db.collection("allMatches").document(docId)
+        userRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.data?.containsKey("reservedMatches")!!) {
+                        val listOfReservations =
+                            documentSnapshot.data?.get("reservedMatches") as ArrayList<HashMap<*,*>>
+
+                        for (i in 0 until listOfReservations.size) {
+                            Log.e(
+                                "TAG",
+                                "getMyMatchesList: ${listOfReservations[i]}"
+                            )
+                            allmatchesList.add(
+                                UserReservedMatches(listOfReservations[i]["stadiumName"].toString()
+                                ,listOfReservations[i]["time"] as Long)
+                            )
+                        }
+
+//                            userReservedMatches.addAll(listOfReservations)
+                        myMatchesAdapter.notifyDataSetChanged()
+                    }
+
+                }
+            }
+            .addOnFailureListener { exception ->
+
             }
     }
 }

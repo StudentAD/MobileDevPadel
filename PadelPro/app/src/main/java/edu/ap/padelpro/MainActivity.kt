@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.play -> replaceFragment(FieldsFragment())
                         R.id.profile -> replaceFragment(Profile())
-                R.id.settings -> replaceFragment(Settings())
+                R.id.settings -> replaceFragment(MyMatchesFragment())
                 else -> {
                 }
             }
